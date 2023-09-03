@@ -1,0 +1,23 @@
+<html>
+    <head>
+        <title>
+            Codeial/<%= title%>
+        </title>
+
+        <link rel="stylesheet" type="text/css" href="/css/layouts.css">
+         <%- style %>
+    </head>
+    <body>
+        <!-- include header -->
+        <%- include('_header'); %>
+
+        <!-- our body will be filled inside this  -->
+        <h1>
+            <%- body%>
+        </h1>
+
+        <!-- include footer -->
+        <%- include('_footer'); %>
+        <%- script %>
+    </body>
+</html>
