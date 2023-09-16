@@ -5,6 +5,9 @@
         </title>
 
         <link rel="stylesheet" type="text/css" href="/css/layouts.css">
+       <link rel="stylesheet" href="/css/header.css">
+       <link rel="stylesheet" href="/css/footer.css">
+
          <%- style %>
     </head>
     <body>
@@ -12,9 +15,9 @@
         <%- include('_header'); %>
 
         <!-- our body will be filled inside this  -->
-        <h1>
+        <main id="layout-main">
             <%- body%>
-        </h1>
+        </main>
 
         <!-- include footer -->
         <%- include('_footer'); %>
