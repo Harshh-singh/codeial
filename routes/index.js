@@ -12,6 +12,6 @@ router.get('/' , homecontroller.home);
 router.use('/users' , require('./users'));
 
 //when any posts request comes it shift control to post route
-router.use('/post', require('./post'))
+router.use('/post', require('./post'));
 
 module.exports = router;
