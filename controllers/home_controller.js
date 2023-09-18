@@ -15,6 +15,12 @@ module.exports.home = async function(req,res){
     //   }
     post.find({})
     .populate('user')
+    .populate({
+      path: 'comments',
+      populate:{
+        path: 'user',
+      }
+    })
     .exec()
     .then(posts => {
       res.render('home', {
