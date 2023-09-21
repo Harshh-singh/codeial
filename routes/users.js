@@ -6,7 +6,8 @@ const usercontroller = require('../controllers/users_controller');
 // const userposts = require('../controllers/posts_controller');
 
 //when request comes as user profile
-router.get('/profile' , passport.checkAuthentication, usercontroller.profile);
+router.get('/profile/:id' , passport.checkAuthentication, usercontroller.profile);
+router.post('/update/:id' , passport.checkAuthentication, usercontroller.update);
 
 // when request comes as user posts
 // router.get('/posts' , userposts.posts);
@@ -25,7 +26,7 @@ router.post('/create',usercontroller.create);
 //use passport as a middleware to authenticate
 router.post('/createSession', passport.authenticate(
     'local',
-    {failureRedirect: '/users/signup'},
+    {failureRedirect: '/users/signin'},
 ), usercontroller.createSession);
 
 router.get('/signout', usercontroller.destroySession);

@@ -10,6 +10,8 @@ const passport = require('passport');
 const passportLocal = require('./config/passport-local-strategy');
 const MongoStore = require('connect-mongo');
 const sassMiddleware = require('sass-middleware');
+const flash = require('connect-flash');
+const customeMware = require('./config/middleware');
 
 app.use(sassMiddleware({
     src: './assets/scss',
@@ -50,6 +52,8 @@ app.use(session({
         mongoUrl: 'mongodb://127.0.0.1/codeial_development',
         autoRemove: 'disabled'
     }, 
+
+    
     function(err){
         console.log(err || 'connect-mongodb setup ok');
     }
@@ -60,6 +64,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use(passport.setAuthenticatedUser);
+
+app.use(flash());
+app.use(customeMware.setflash);
 
 app.use('/' , require('./routes'));
 
