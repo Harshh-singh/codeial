@@ -14,11 +14,12 @@ module.exports.create = function(req,res){
       .then(comment =>{
         post.comments.push(comment);
         post.save();
-
+        req.flash('success', 'Comment added!')
         res.redirect('/');
+        
       })
       .catch(error =>{
-        console.log('error in comments',error)
+        req.flash('error', error);
         res.redirect('/');
       })
     });
@@ -34,9 +35,11 @@ module.exports.destroy = function(req,res){
       return post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
     })
     .then(post => {
+      req.flash('success', 'Comment deleted!')
       return res.redirect('back');
     });
   } else {
+    req.flash('error', err);
     return res.redirect('back');
   }
 })

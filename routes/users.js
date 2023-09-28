@@ -13,6 +13,7 @@ router.post('/update/:id' , passport.checkAuthentication, usercontroller.update)
 // router.get('/posts' , userposts.posts);
 
 //request for sign in page
+
 router.get('/signin' , usercontroller.signin);
 
 //request for sign up page
