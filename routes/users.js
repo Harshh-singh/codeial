@@ -9,8 +9,6 @@ const usercontroller = require('../controllers/users_controller');
 router.get('/profile/:id' , passport.checkAuthentication, usercontroller.profile);
 router.post('/update/:id' , passport.checkAuthentication, usercontroller.update);
 
-// when request comes as user posts
-// router.get('/posts' , userposts.posts);
 
 //request for sign in page
 
@@ -31,5 +29,8 @@ router.post('/createSession', passport.authenticate(
 ), usercontroller.createSession);
 
 router.get('/signout', usercontroller.destroySession);
+
+router.get('/auth/google', passport.authenticate('google', {scope: ['profile', 'email']}));
+router.get('/auth/google/callback', passport.authenticate('google', {failureRedirect: '/users/signin'}),usercontroller.createSession);
 
 module.exports = router;

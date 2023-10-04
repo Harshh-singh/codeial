@@ -1,6 +1,6 @@
 <link rel="stylesheet" href="/css/user_profile.css">
 
-    <h1>User profile</h1>
+<img src="<%= user.avatar%>" alt="<%= user.name%>" width="100%">
 
     
 
@@ -11,7 +11,7 @@
             <input type="text" name="name" placeholder="Your name" value="<%= profile_user.name %>">
             <input type="email" name="email" placeholder="Your email" value="<%= profile_user.email %>">
 
-            <input type="file" name="avatar" placeholder="profile picture"> 
+           <input type="file" name="avatar" placeholder="profile Picture">
             <input type="submit" value="Update">
         </form>
 
