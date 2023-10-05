@@ -1,38 +1,59 @@
-const comment = require('../models/comment');
-const post = require('../models/post');
-
+const Comment = require('../models/comment');
+const Post = require('../models/post');
+const commentsMailer = require('../mailers/comment_mailer');
 //we should use try catch from next time
-module.exports.create = function(req,res){
-    post.findById(req.body.post)
+module.exports.create = async function(req,res){
 
-    .then(post =>{
-      comment.create({
-        content: req.body.content,
-        post: req.body.post,
-        user: req.user._id
-      })  
-      .then(comment =>{
+  try{
+    let post = await Post.findById(req.body.post)
+
+    if(post){
+      let comment = await Comment.create({
+          content: req.body.content,
+          post: req.body.post,
+          user: req.user._id
+        });
+        // console.log(comment);
+        // post.comments.push(comment);
         post.comments.push(comment);
         post.save();
-        req.flash('success', 'Comment added!')
-        res.redirect('/');
+
+        comment = await comment.populate('user', 'name email')
+        commentsMailer.newComment(comment);
+
         
-      })
-      .catch(error =>{
-        req.flash('error', error);
-        res.redirect('/');
-      })
-    });
+        if(req.xhr){
+        
+
+          return res.status(200).json({
+            data: {
+              comment: comment
+            },
+            message: 'Post created!'
+          });
+
+         
+        }
+          
+        req.flash('success', 'comment published!');
+        return res.redirect(back);
+    }
+   
+  }catch(err){
+    req.flash('error', err);
+    res.redirect('/');
+  }
+  
 }
 
 module.exports.destroy = function(req,res){
-  comment.findById(req.params.id)
+  Comment.findById(req.params.id)
 .then(comment => {
   if (comment.user == req.user.id) {
     let postId = comment.post;
     comment.deleteOne()
     .then(() => {
-      return post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
+      return Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
     })
     .then(post => {
       req.flash('success', 'Comment deleted!')
