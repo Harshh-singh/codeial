@@ -9,11 +9,24 @@
       <!-- delete comment button -->
       <% if(locals.user && locals.user.id == comment.user.id){%>
         <small>
-          <a href="comments/destroy/<%= comment.id%>">
+          <a href="/comments/destroy/<%= comment.id%>">
             <button>Delete</button>
           </a>
         </small>
         <%}%>
+
+        <small>
+          <% if(locals.user){ %>
+                 
+              <a class="toggle-like-button" data-likes="<%= comment.likes.length %>" href="/likes/toggle/?id=<%=comment.id%>&type=comment">
+
+              <%=comment.likes.length %>Likes
+            </a>
+
+            <% }else{%>
+              <%=comment.likes.length %>Likes
+              <% } %>
+        </small>
      
     </p>
     </li>

@@ -1,6 +1,10 @@
 const Comment = require('../models/comment');
 const Post = require('../models/post');
 const commentsMailer = require('../mailers/comment_mailer');
+const queue = require('../config/kue');
+const commentEmailWorker = require('../workers/comment_email_worker');
+const Like = require('../models/likes');
+
 //we should use try catch from next time
 module.exports.create = async function(req,res){
 
@@ -19,8 +23,15 @@ module.exports.create = async function(req,res){
         post.save();
 
         comment = await comment.populate('user', 'name email')
-        commentsMailer.newComment(comment);
+        // commentsMailer.newComment(comment);
+       let job = queue.create('emails', comment).save(function(err){
+          if(err){
+             console.log('error in sending to the queue',err);
+             return;
+          }
 
+          console.log('job enqueued', job.id);
+        });
         
         if(req.xhr){
         
@@ -53,7 +64,8 @@ module.exports.destroy = function(req,res){
     let postId = comment.post;
     comment.deleteOne()
     .then(() => {
-      return Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
+       Post.findByIdAndUpdate(postId, {$pull: {comments: req.params.id}});
+      Like.deleteMany({likeable: comment._id, onModel: 'Comment'});
     })
     .then(post => {
       req.flash('success', 'Comment deleted!')
