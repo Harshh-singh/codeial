@@ -2,5 +2,13 @@ body {
   background-color: aqua;
   text-align: center;
 }
+body img {
+  height: 24vh;
+  width: 12vw;
+  border: 2px solid white;
+  margin: 5px 2px 5px 2px;
+  border-radius: 50%;
+  
+}
 
 /*# sourceMappingURL=user_profile.css.map */

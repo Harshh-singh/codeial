@@ -1,15 +1,67 @@
 const User = require('../models/user');
+const fs = require('fs');
+const path = require('path');
 
 
-module.exports.profile = async function(req , res){
-  return res.render('user_profile', {
-    title: 'user profile'
-  })
+module.exports.profile = async function(req, res) {
+  User.findById(req.params.id)
+    .then(user => {
+      return res.render('user_profile', {
+        title: 'user profile',
+        profile_user: user,
+      });
+    })
+    .catch(err => {
+      console.error(err); // Handle the error appropriately
+      // You might want to render an error page or redirect to another page here
+    });
+}
+
+module.exports.update = async function(req,res){
+
+
+  if(req.user.id == req.params.id){
+
+    try{
+      let user = await User.findById(req.params.id);
+      User.uploadedAvatar(req, res, function(err){
+        if(err){
+          console.log('****Multer Error: ', err)
+        }
+        
+        user.name = req.body.name;
+        user.email = req.body.email;
+
+        if(req.file){
+
+
+          if(user.avatar){
+            fs.unlinkSync(path.join(__dirname, '..', user.avatar));
+          }
+
+          //this is saving the path of uploaded file into the avatar field in the user
+          user.avatar = User.avatarPath + '/' + req.file.filename;
+        }
+        user.save();
+        return res.redirect('back');
+
+      });
+
+    }catch(err){
+      req.flash('error', err);
+      return res.redirect('back');
+    }
+
+  }else{
+    req.flash('error', 'unauthorized!');
+    return res.status(401).send('unauthorized');
+  }
+
 }
 
 
-module.exports.signin = function(req,res){
 
+module.exports.signin = function(req,res){
   if(req.isAuthenticated()){
    return res.redirect('/users/profile')
   }
@@ -53,7 +105,7 @@ module.exports.create = async function(req,res){
 
 //get sign in data and create session
 module.exports.createSession = async function(req,res){
-
+  req.flash('success', 'Logged in successfully');
   return res.redirect('/'); 
 
 }
@@ -64,6 +116,7 @@ module.exports.destroySession = function(req, res){
       console.log('error in signing out', err);
     }
   });
+  req.flash('success', 'You have logged out!');
 
   return res.redirect('/');
 }
