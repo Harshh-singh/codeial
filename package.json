@@ -27,15 +27,17 @@
     "mongoose": "^7.5.0",
     "multer": "^1.4.5-lts.1",
     "node-sass": "^9.0.0",
+    "node-sass-middleware": "^1.1.0",
     "nodemailer": "^6.9.5",
     "passport": "^0.6.0",
     "passport-google-oauth": "^2.0.0",
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "sass-middleware": "^0.0.3",
+    "socket.io": "^4.7.2",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "sass": "^1.67.0"
+    "sass": "^1.69.3"
   }
 }
