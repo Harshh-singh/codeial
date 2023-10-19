@@ -1,8 +1,4 @@
 body {
-  margin: 0;
-}
-body #layout-main {
-  height: 100%;
-}
-
-/*# sourceMappingURL=layouts.css.map */
+  margin: 0; }
+  body #layout-main {
+    height: 100%; }
