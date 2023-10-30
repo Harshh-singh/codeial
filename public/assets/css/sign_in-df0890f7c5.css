@@ -1,0 +1,20 @@
+body {
+  margin: 0px; }
+  body div {
+    box-shadow: 0px 0px 4px 1px grey;
+    margin-left: 25%;
+    margin-top: 1%;
+    text-align: center;
+    border: 2px solid grey;
+    height: 60%;
+    width: 50%;
+    background-color: lightgrey; }
+    body div p a {
+      padding: 4px;
+      border: 2px solid grey;
+      background-color: #84b4ef;
+      color: white;
+      text-decoration: none; }
+    body div p a:hover {
+      background-color: #41f352;
+      box-shadow: 0px 0px 4px 1px grey; }
